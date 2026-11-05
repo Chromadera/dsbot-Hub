@@ -3,6 +3,18 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$HERE"
+# A release records the commit it was built from (see COMMIT below), so a build
+# out of a tree with uncommitted changes ships content that does not match the
+# commit it claims — silently, because the artifact checks only inspect
+# structure. Refuse instead. Ignored files (the release artifacts themselves) are
+# untracked and do not count; untracked source files do.
+if [ -d "$HERE/.git" ] && [ -n "$(git status --porcelain)" ]; then
+  echo "error: working tree has uncommitted changes." >&2
+  echo "Commit or stash them first: the tarball records HEAD, so a dirty build" >&2
+  echo "would ship content that does not match its own commit." >&2
+  git status --short >&2
+  exit 1
+fi
 VERSION="$(node -p "require('./package.json').version")"
 OUT="$HERE/release"
 # The fork tarball is built from the DS Bot fork source, not from this repo's
