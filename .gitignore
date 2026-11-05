@@ -1,0 +1,31 @@
+node_modules/
+.probe/
+*.log
+
+# Secrets: never commit these. `.env.example` is the only env file allowed.
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+secrets.json
+credentials.json
+cookies*.txt
+.dsh/
+.dsh-home/
+.dsh-secrets/
+
+# Local build output and editor/OS noise
+release/*.tgz
+release/*.tar.gz
+release/RELEASE.json
+release/SHA256SUMS
+*.bak
+*.tmp
+.DS_Store
+Thumbs.db
+coverage/

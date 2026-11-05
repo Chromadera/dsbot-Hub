@@ -1,0 +1,12 @@
+- insert:
+    - id: dsbot-hub
+      name: dsbot-hub
+      config:
+        servers: []
+        panel:
+          defaultServer: ''
+        proxy:
+          listen: 127.0.0.1:13091
+          bind: 127.0.0.1
+          grantTtlSeconds: 60
+          sessionHours: 12

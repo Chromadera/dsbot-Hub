@@ -1,0 +1,22 @@
+{
+  "name": "dsbot-mobile-desktop-gate",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "description": "Hide desktop-only plugin UI when the DSH mobile shell is active.",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [],
+      "platform": "web"
+    }
+  }
+}

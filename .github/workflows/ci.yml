@@ -1,0 +1,27 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The secret scan reads every commit; a shallow clone hides history.
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Unit tests
+        run: npm test
+      - name: Release metadata
+        run: node scripts/check-release.mjs
+      - name: Secret scan (tree and history)
+        run: node scripts/check-secrets.mjs --history
+      - name: Pack check
+        run: npm pack --dry-run
+      # The full release archive needs release/ds-bot-*.tgz, which is built from
+      # the fork source and is not tracked here. Build it on a release machine
+      # with that tarball present; CI validates the package and metadata only.

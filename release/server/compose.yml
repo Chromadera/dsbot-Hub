@@ -1,0 +1,25 @@
+services:
+  ds-bot:
+    build:
+      context: ..
+      dockerfile: server/Dockerfile
+    image: dsbots/ds-bot:0.2.6-hub.2
+    container_name: "${DS_BOT_CONTAINER:-ds-bot}"
+    ports:
+      - "127.0.0.1:${DS_BOT_PORT:-13081}:3080"
+    # Every variable in server/.env reaches the container, so any provider key
+    # works without editing this file. The variable name must match the
+    # `apiKeyEnv` of a model route in the container's DSH profile. See
+    # README "Model providers".
+    env_file:
+      - .env
+    environment:
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
+      DSH_TRUSTED_HOST: "localhost,127.0.0.1"
+      DSH_TELEMETRY_DISABLED: "1"
+    volumes:
+      - "${DS_BOT_DATA_DIR:-/opt/ds-bot/data}:/data"
+      - "${DS_BOT_WORKSPACE_DIR:-/opt/ds-bot/workspace}:/workspace"
+    restart: unless-stopped
+    stop_grace_period: 15s

@@ -1,0 +1,25 @@
+{
+  "name": "dsh-profile-dsbot-hub",
+  "private": true,
+  "description": "Reference DSH web profile: DS Bot Hub + desktop plugin set + mobile desktop-UI gate.",
+  "dependencies": {
+    "dsbot-hub": "0.11.13",
+    "dsbot-mobile-desktop-gate": "file:../dsbot-mobile-desktop-gate-0.1.1.tgz",
+    "dsh-better-sidebar": "0.28.0",
+    "dsh-context": "0.80.2",
+    "dshmarket": "1.73.10"
+  },
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-web-app",
+        "dsbot-hub",
+        "dshmarket",
+        "dsh-context",
+        "dsh-better-sidebar",
+        "dsbot-mobile-desktop-gate"
+      ]
+    }
+  }
+}

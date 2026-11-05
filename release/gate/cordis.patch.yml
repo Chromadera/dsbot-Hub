@@ -1,0 +1,4 @@
+# Profile gate: hide desktop-only plugin surfaces on the mobile shell.
+- insert:
+    - id: dsbot-mobile-desktop-gate
+      name: 'dsbot-mobile-desktop-gate'

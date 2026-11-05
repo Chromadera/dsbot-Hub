@@ -1,0 +1,80 @@
+{
+  "name": "dsbot-hub",
+  "version": "0.11.13",
+  "private": false,
+  "type": "module",
+  "description": "DSBots Hub: one hub for one or more DS Bot servers inside DSH",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chromadera/dsbot-Hub.git"
+  },
+  "homepage": "https://github.com/Chromadera/dsbot-Hub#readme",
+  "bugs": {
+    "url": "https://github.com/Chromadera/dsbot-Hub/issues"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "src",
+    "test",
+    "docs",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "THIRD_PARTY.md",
+    "README.pt-BR.md",
+    "README.zh-CN.md",
+    "SETUP.md",
+    "SETUP.pt-BR.md",
+    "SETUP.zh-CN.md"
+  ],
+  "engines": {
+    "node": ">=24.9.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "test:live": "node test/proxy-live.mjs",
+    "check-release": "node scripts/check-release.mjs",
+    "check-secrets": "node scripts/check-secrets.mjs",
+    "check-artifacts": "node scripts/check-artifacts.mjs",
+    "check": "node scripts/check-release.mjs && node scripts/check-secrets.mjs",
+    "prepack": "node scripts/check-release.mjs && node scripts/check-secrets.mjs",
+    "build:release": "bash scripts/build-release.sh"
+  },
+  "author": "the DS Bot Hub authors",
+  "keywords": [
+    "dsh",
+    "ds-bot",
+    "deepseek-harness",
+    "hub",
+    "plugin"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

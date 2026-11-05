@@ -1,0 +1,22 @@
+# Example systemd user unit for a DSH web instance on a private network.
+# Replace <TAILNET-IP> and the paths. Install under
+# ~/.config/systemd/user/dsh-web.service, then:
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now dsh-web.service
+[Unit]
+Description=DSH web (DS Bot Hub profile)
+After=network-online.target tailscaled.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h
+Environment=DSH_HOME=%h/.dsh
+ExecStart=%h/.local/bin/dsh web --host <TAILNET-IP> --port 3080 --no-open
+Restart=on-failure
+RestartSec=3
+KillSignal=SIGTERM
+TimeoutStopSec=20
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,14 @@
+# Reference profile overlay for DS Bot Hub.
+#
+# The hub allocates one browser origin per server. On a private/tailnet host,
+# bind the origins to the address the browser uses (or 0.0.0.0 behind ACLs).
+- id: dsbot-hub
+  config:
+    servers: []
+    panel:
+      defaultServer: ''
+    proxy:
+      listen: 127.0.0.1:13091
+      bind: 127.0.0.1
+      grantTtlSeconds: 60
+      sessionHours: 12

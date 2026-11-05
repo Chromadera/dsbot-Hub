@@ -1,0 +1,27 @@
+DS Bot Hub
+Copyright 2026 the DS Bot Hub authors
+
+DSBots Hub is an independent plugin. It is not affiliated with the DS Bot or
+DeepSeek Harness projects.
+
+The `dsbot-hub` npm package does not include or modify DS Bot, and it does not
+copy DS Bot source. It uses the routes the DS Bot UI itself uses (`/api/bot`,
+the login token) and embeds the UI the server serves.
+
+The **release archive** also ships a separately built DS Bot fork:
+
+- `ds-bot-0.2.6-hub.2.tgz` — based on DS Bot 0.2.6, Apache-2.0, Copyright 2026
+  Fei2411 and the DS Bot contributors. It is a modified fork, not an upstream
+  release. Its modifications are listed in `MODIFICATIONS.md` inside the
+  tarball, and its `LICENSE` and `NOTICE` are included unchanged. The fork is
+  distributed under the same Apache-2.0 license. It is baked into
+  `dsbots/ds-bot:0.2.6-hub.2` and is not a dependency of the hub package.
+
+Third-party components referenced or interoperated with:
+
+- DS Bot (Fei2411/DeepSeek-Bot) — Apache-2.0.
+- DeepSeek Harness (DSH) — MIT. The hub is a DSH bundle; it uses the public
+  host web-server, connection, credentials and tool services and the public Web
+  UI slots. No DSH source is copied into the hub package.
+
+See the respective repositories for their full license texts.
