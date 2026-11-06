@@ -84,6 +84,23 @@ Bot settings keeps the original horizontal tab strip. Harness settings uses the
 same horizontal tab language for General, Models, Built-in plugins and Agent
 presets; its content is full width below the tabs.
 
+## Third-party desktop UI below 1025px
+
+`dsbot-mobile-desktop-gate` keeps desktop-only chrome out of the mobile shell.
+Its scope is deliberate and narrow:
+
+- `dsh-better-sidebar`'s self-drawn **bottom workbench** and its toggle are
+  hidden up to 1024px. The sidebar itself is left alone at every width: DSH
+  opens the right sidebar fullscreen at or below 1024px, so the file tree,
+  editor, git and previews work on phones and tablets instead of being gated.
+- `dskin` pets and palette are hidden below 1025px (only when that plugin is
+  installed).
+- **Context Insights** and **Plugin Market** entries are hidden below 1025px.
+
+The gate only hides; it never disables server-side plugin code. Re-check it
+after upgrading any of those plugins, because the selectors are tied to their
+generated class names.
+
 ## Back gesture
 
 DSH's shell uses a sentinel for its own shell-only layers and unwinds them on
