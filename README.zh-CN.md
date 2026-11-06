@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  版本 <strong>0.11.13</strong> · DS Bot <strong>0.2.6-hub.3</strong> · DSH <strong>0.2.2-alpha.3+</strong>
+  版本 <strong>0.11.14</strong> · DS Bot <strong>0.2.6-hub.3</strong> · DSH <strong>0.2.2-alpha.3+</strong>
 </p>
 
 ---
@@ -82,9 +82,9 @@ Node、Docker 以及提供商账号需要你自行准备。[SETUP.zh-CN.md](SETU
 ### 1. 解压并校验
 
 ```bash
-mkdir -p dsbot-hub-0.11.13
-tar -xzf dsbot-hub-release-0.11.13.tar.gz -C dsbot-hub-0.11.13
-cd dsbot-hub-0.11.13
+mkdir -p dsbot-hub-0.11.14
+tar -xzf dsbot-hub-release-0.11.14.tar.gz -C dsbot-hub-0.11.14
+cd dsbot-hub-0.11.14
 
 sha256sum -c SHA256SUMS     # 每一行都必须以 OK 结尾
 ./preflight.sh              # 检查主机与产物
@@ -267,10 +267,10 @@ iframe。一张覆盖该主机名的证书即可用于所有端口；用 Caddy �
 
 | 文件 | 用途 |
 |---|---|
-| `dsbot-hub-0.11.13.tgz` | DSH Hub 插件 |
+| `dsbot-hub-0.11.14.tgz` | DSH Hub 插件 |
 | `dsbot-mobile-desktop-gate-0.1.2.tgz` | 移动端桌面 UI gate |
 | `ds-bot-0.2.6-hub.3.tgz` | DS Bot 分支：回应与返回手势 |
-| `dsbot-hub-release-0.11.13.tar.gz` | 解压后的发布包：文档、配置、安装脚本、服务器构建 |
+| `dsbot-hub-release-0.11.14.tar.gz` | 解压后的发布包：文档、配置、安装脚本、服务器构建 |
 | `SHA256SUMS` | 产物校验和 |
 | `preflight.sh` | 主机与发布包检查 |
 

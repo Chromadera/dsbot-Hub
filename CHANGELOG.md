@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.14
+
+- Publishing: the release workflow is now `release.yaml` and authenticates through
+  npm trusted publishing (OIDC) instead of a stored `NPM_TOKEN` secret.
+- No runtime changes; the plugin code is identical to 0.11.13.
+
 ## 0.11.13
 
 - Add a shared hardware/edge back stack across the hub and DS-Bot iframe.

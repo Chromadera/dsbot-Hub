@@ -221,7 +221,7 @@ WITH_DESKTOP=0 ./install.sh "$DSH_PROFILE"
 "${DSH_BIN:-dsh}" plugin --profile "$DSH_PROFILE" list --depth 0 | grep dsbot-hub
 ```
 
-预期：出现 `dsbot-hub` 行，版本 `0.11.13`。如果此安装的 CLI 语法不同，请停止
+预期：出现 `dsbot-hub` 行，版本 `0.11.14`。如果此安装的 CLI 语法不同，请停止
 并索取配置路径，不要手动编辑配置。
 
 然后，如果运维人员提供了 `DSH_RESTART_CMD` 就运行它，并让对方强制刷新浏览器。
@@ -305,9 +305,9 @@ docker exec "$DS_BOT_CONTAINER" sh -lc \
 ```text
 Status: success | pending-manual | failed
 Phase: <last completed phase>
-Release: 0.11.13
+Release: 0.11.14
 DS Bot: 0.2.6-hub.3
-Hub: 0.11.13
+Hub: 0.11.14
 Server container: <name / image / status>
 Data profile: <version>
 Image template: <version>
@@ -354,7 +354,7 @@ Hub——把上一个 tarball 重新安装到同一配置，然后重启 DSH：
 
 - 缺少必需输入或输入不明确；
 - preflight 或校验和失败；
-- 版本不是 `0.11.13` / `0.2.6-hub.3`；
+- 版本不是 `0.11.14` / `0.2.6-hub.3`；
 - 容器未运行，或日志显示启动错误；
 - 命令会打印或持久化机密；
 - 重启、镜像推送、DNS 变更或删除未获授权；

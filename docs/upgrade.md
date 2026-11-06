@@ -1,5 +1,10 @@
 # Upgrade
 
+## Hub 0.11.13 → 0.11.14
+
+No plugin changes and no data migration: reinstall the tarball only if you track
+version numbers. The npm package is now published through trusted publishing.
+
 ## Hub 0.11.12 → 0.11.13
 
 Install the new hub tarball and the DS Bot `0.2.6-hub.3` fork, restart DSH web

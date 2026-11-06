@@ -233,7 +233,7 @@ Verify the profile dependency:
 "${DSH_BIN:-dsh}" plugin --profile "$DSH_PROFILE" list --depth 0 | grep dsbot-hub
 ```
 
-Expected: a `dsbot-hub` row at `0.11.13`. If the CLI syntax differs on this
+Expected: a `dsbot-hub` row at `0.11.14`. If the CLI syntax differs on this
 install, stop and ask for the profile path rather than editing the profile by
 hand.
 
@@ -320,9 +320,9 @@ Return exactly this shape, with no secret values:
 ```text
 Status: success | pending-manual | failed
 Phase: <last completed phase>
-Release: 0.11.13
+Release: 0.11.14
 DS Bot: 0.2.6-hub.3
-Hub: 0.11.13
+Hub: 0.11.14
 Server container: <name / image / status>
 Data profile: <version>
 Image template: <version>
@@ -369,7 +369,7 @@ Stop and ask the operator when:
 
 - a required input is missing or ambiguous;
 - preflight or a checksum fails;
-- a version is not `0.11.13` / `0.2.6-hub.3`;
+- a version is not `0.11.14` / `0.2.6-hub.3`;
 - the container is not running or logs show a startup error;
 - a command would print or persist a secret;
 - a restart, image push, DNS change, or deletion has not been authorized;

@@ -2,7 +2,7 @@
 
 | Component | Version |
 |---|---|
-| dsbot-hub | 0.11.13 |
+| dsbot-hub | 0.11.14 |
 | dsbot-mobile-desktop-gate | 0.1.2 |
 | DSH | 0.2.2-alpha.3+ |
 | Node | >= 24.9.0 |

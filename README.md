@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  Release <strong>0.11.13</strong> · DS Bot <strong>0.2.6-hub.3</strong> · DSH <strong>0.2.2-alpha.3+</strong>
+  Release <strong>0.11.14</strong> · DS Bot <strong>0.2.6-hub.3</strong> · DSH <strong>0.2.2-alpha.3+</strong>
 </p>
 
 ---
@@ -88,9 +88,9 @@ server image build.
 ### 1. Unpack and verify
 
 ```bash
-mkdir -p dsbot-hub-0.11.13
-tar -xzf dsbot-hub-release-0.11.13.tar.gz -C dsbot-hub-0.11.13
-cd dsbot-hub-0.11.13
+mkdir -p dsbot-hub-0.11.14
+tar -xzf dsbot-hub-release-0.11.14.tar.gz -C dsbot-hub-0.11.14
+cd dsbot-hub-0.11.14
 
 sha256sum -c SHA256SUMS     # every line must end in OK
 ./preflight.sh              # host and artifact checks
@@ -285,10 +285,10 @@ See [docs/config.md](docs/config.md) for every field and the origin rules.
 
 | Artifact | Purpose |
 |---|---|
-| `dsbot-hub-0.11.13.tgz` | DSH hub plugin |
+| `dsbot-hub-0.11.14.tgz` | DSH hub plugin |
 | `dsbot-mobile-desktop-gate-0.1.2.tgz` | mobile desktop-UI gate |
 | `ds-bot-0.2.6-hub.3.tgz` | DS Bot fork: reactions and back gestures |
-| `dsbot-hub-release-0.11.13.tar.gz` | unpacked release: docs, profile, installer, server build |
+| `dsbot-hub-release-0.11.14.tar.gz` | unpacked release: docs, profile, installer, server build |
 | `SHA256SUMS` | artifact checksums |
 | `preflight.sh` | host and release verification |
 

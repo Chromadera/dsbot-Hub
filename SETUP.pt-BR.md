@@ -240,7 +240,7 @@ Verifique a dependência do perfil:
 "${DSH_BIN:-dsh}" plugin --profile "$DSH_PROFILE" list --depth 0 | grep dsbot-hub
 ```
 
-Esperado: uma linha `dsbot-hub` na versão `0.11.13`. Se a sintaxe do CLI for
+Esperado: uma linha `dsbot-hub` na versão `0.11.14`. Se a sintaxe do CLI for
 diferente nesta instalação, pare e peça o caminho do perfil em vez de editar o
 perfil à mão.
 
@@ -329,9 +329,9 @@ Retorne exatamente este formato, sem valores de segredo:
 ```text
 Status: success | pending-manual | failed
 Phase: <last completed phase>
-Release: 0.11.13
+Release: 0.11.14
 DS Bot: 0.2.6-hub.3
-Hub: 0.11.13
+Hub: 0.11.14
 Server container: <name / image / status>
 Data profile: <version>
 Image template: <version>
@@ -378,7 +378,7 @@ Pare e pergunte ao operador quando:
 
 - faltar uma entrada obrigatória ou ela for ambígua;
 - o preflight ou um checksum falhar;
-- uma versão não for `0.11.13` / `0.2.6-hub.3`;
+- uma versão não for `0.11.14` / `0.2.6-hub.3`;
 - o contêiner não estiver rodando ou os logs mostrarem erro de inicialização;
 - um comando for imprimir ou persistir um segredo;
 - um restart, push de imagem, mudança de DNS ou exclusão não estiver autorizado;

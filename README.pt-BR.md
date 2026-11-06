@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  Versão <strong>0.11.13</strong> · DS Bot <strong>0.2.6-hub.3</strong> · DSH <strong>0.2.2-alpha.3+</strong>
+  Versão <strong>0.11.14</strong> · DS Bot <strong>0.2.6-hub.3</strong> · DSH <strong>0.2.2-alpha.3+</strong>
 </p>
 
 ---
@@ -88,9 +88,9 @@ imagem de servidor.
 ### 1. Descompacte e verifique
 
 ```bash
-mkdir -p dsbot-hub-0.11.13
-tar -xzf dsbot-hub-release-0.11.13.tar.gz -C dsbot-hub-0.11.13
-cd dsbot-hub-0.11.13
+mkdir -p dsbot-hub-0.11.14
+tar -xzf dsbot-hub-release-0.11.14.tar.gz -C dsbot-hub-0.11.14
+cd dsbot-hub-0.11.14
 
 sha256sum -c SHA256SUMS     # cada linha deve terminar em OK
 ./preflight.sh              # verificações do host e dos artefatos
@@ -289,10 +289,10 @@ Veja [docs/config.md](docs/config.md) para todos os campos e as regras de origem
 
 | Artefato | Finalidade |
 |---|---|
-| `dsbot-hub-0.11.13.tgz` | plugin do hub para o DSH |
+| `dsbot-hub-0.11.14.tgz` | plugin do hub para o DSH |
 | `dsbot-mobile-desktop-gate-0.1.2.tgz` | gate mobile da interface desktop |
 | `ds-bot-0.2.6-hub.3.tgz` | fork do DS Bot: reações e gestos de voltar |
-| `dsbot-hub-release-0.11.13.tar.gz` | release descompactada: docs, perfil, instalador, build do servidor |
+| `dsbot-hub-release-0.11.14.tar.gz` | release descompactada: docs, perfil, instalador, build do servidor |
 | `SHA256SUMS` | checksums dos artefatos |
 | `preflight.sh` | verificação do host e da release |
 

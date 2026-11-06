@@ -1,6 +1,6 @@
 {
   "name": "dsbot-hub",
-  "version": "0.11.13",
+  "version": "0.11.14",
   "private": false,
   "type": "module",
   "description": "DSBots Hub: one hub for one or more DS Bot servers inside DSH",
