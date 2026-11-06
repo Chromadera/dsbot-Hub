@@ -25,7 +25,10 @@ if ! compgen -G "$OUT/ds-bot-*.tgz" > /dev/null; then
   echo "release/ before running build:release (see vendor/README.md)." >&2
   exit 1
 fi
-rm -f "$OUT"/dsbot-hub-*.tgz "$OUT"/dsbot-hub-release-*.tar.gz
+# Clear the previous manifest and checksums too: they describe the old version,
+# and prepack's check-release compares RELEASE.json against package.json, so a
+# stale one fails the build of every new version.
+rm -f "$OUT"/dsbot-hub-*.tgz "$OUT"/dsbot-hub-release-*.tar.gz "$OUT"/RELEASE.json "$OUT"/SHA256SUMS
 # npm records the source file modes. A checkout made under umask 077 would pack
 # 600 files, so add the read bit before packing (exec bits are kept).
 find "$HERE" \( -name .git -o -name node_modules -o -name .probe -o -name '.probe-*' \) -prune \
