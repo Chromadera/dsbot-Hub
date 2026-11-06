@@ -38,6 +38,17 @@ node - "$OUT" "$VERSION" "$COMMIT" "$RELEASED_AT" <<'NODE'
 const fs = require('node:fs')
 const path = require('node:path')
 const [out, version, commit, releasedAt] = process.argv.slice(2)
+// The fork and gate versions are read from the artifacts actually staged in
+// release/, never hardcoded: a hand-edited constant here silently shipped a
+// manifest describing the previous fork while the archive carried the new one.
+const newest = prefix => fs.readdirSync(out)
+  .filter(name => name.startsWith(prefix) && name.endsWith('.tgz'))
+  .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
+  .at(-1)
+const fork = newest('ds-bot-')
+const gate = newest('dsbot-mobile-desktop-gate-')
+if (fork === undefined) throw new Error('no ds-bot-*.tgz staged in release/')
+const forkVersion = fork.replace(/^ds-bot-/, '').replace(/\.tgz$/, '')
 const release = {
   name: 'dsbot-hub',
   version,
@@ -45,8 +56,8 @@ const release = {
   releasedAt,
   dsh: '0.2.2-alpha.3+',
   node: '>=24.9.0',
-  dsbot: '0.2.6-hub.2',
-  serverImage: 'dsbots/ds-bot:0.2.6-hub.2',
+  dsbot: forkVersion,
+  serverImage: `dsbots/ds-bot:${forkVersion}`,
   desktopPlugins: {
     'dsh-better-sidebar': '0.28.0',
     'dsh-context': '0.80.2',
@@ -55,16 +66,8 @@ const release = {
   },
   artifacts: {
     hub: `dsbot-hub-${version}.tgz`,
-    gate: (() => {
-      const fs = require('node:fs')
-      const gate = fs.readdirSync(out).find(name => name.startsWith('dsbot-mobile-desktop-gate-') && name.endsWith('.tgz'))
-      return gate ?? 'dsbot-mobile-desktop-gate-0.1.1.tgz'
-    })(),
-    dsbot: (() => {
-      const fs = require('node:fs')
-      const fork = fs.readdirSync(out).find(name => name.startsWith('ds-bot-') && name.endsWith('.tgz'))
-      return fork ?? null
-    })(),
+    gate: gate ?? null,
+    dsbot: fork,
     archive: `dsbot-hub-release-${version}.tar.gz`
   }
 }
