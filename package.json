@@ -41,7 +41,8 @@
     "SETUP.zh-CN.md"
   ],
   "engines": {
-    "node": ">=24.9.0"
+    "node": ">=24.9.0",
+    "dsh": ">=0.2.2-alpha.3"
   },
   "dsh": {
     "bundle": {

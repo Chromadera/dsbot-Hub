@@ -9,10 +9,23 @@
 - Hub settings now walks add/edit → list → parent instead of closing the whole
   overlay.
 - Add left-edge swipe back parity for hub and iframe layers.
-- Pair with DS Bot 0.2.6-hub.2: server-owned reactions, bot `react` tool,
-  reaction-aware pre-step context, and the hub-safe back stack.
+- Pair with DS Bot 0.2.6-hub.3: server-owned reactions, bot `react` tool,
+  reaction-aware pre-step context, and the hub-safe back stack, plus the hub.3
+  client fixes — the swipe-reply glyph now anchors to the thumb and the message
+  edge (clear of the bot rail, bare symbol, no chip frame), the Select Text
+  reader is a readonly textarea so a range selects reliably on touch, and the
+  boot scene runs on the compositor so it no longer stalls while the panel
+  iframe loads.
 - Ship a verified install path: `preflight.sh`, `server/.env.example`, and a
   checksum manifest inside the release archive.
+- Keep hub sessions across a restart: the grant/session signing key is persisted
+  at `$DSH_HOME/dsbot-hub-session.key` (0600) instead of being regenerated per
+  process, so restarting DSH no longer signs every open panel out.
+- Mobile gate: stop hiding `dsh-better-sidebar` at small widths. Its CSS-module
+  prefix covered the entire UI, so the old rule hid the whole plugin; now only
+  the bottom workbench and its toggle are hidden up to 1024px. The sidebar
+  itself works at every width because DSH opens the right sidebar fullscreen at
+  or below 1024px.
 - Add `scripts/check-secrets.mjs` and run it over the tree and git history in
   CI; extend `.gitignore` to env files, keys, cookie jars, and DSH state.
 - Rewrite README and SETUP in English, Portuguese, and Chinese around the real

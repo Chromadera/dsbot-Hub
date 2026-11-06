@@ -17,7 +17,10 @@ window.__ModuleLoader__.load({
         html[${GATE_ATTRIBUTE}] [class*="pixelAction"],
         html[${GATE_ATTRIBUTE}] [class*="pixelBreed"],
         html[${GATE_ATTRIBUTE}] [class*="pixelCount"],
-        html[${GATE_ATTRIBUTE}] [class*="nArs4W_"],
+        /* better-sidebar: hide only the self-drawn bottom workbench and its
+           toggle. The plugin's CSS-module prefix (nArs4W_) covers its whole UI —
+           tree, editor, git, previews — so matching that prefix hid the entire
+           sidebar below 1025px instead of just the workbench. */
         html[${GATE_ATTRIBUTE}] [class*="bottomPanel"],
         html[${GATE_ATTRIBUTE}] [class*="bottomResize"],
         html[${GATE_ATTRIBUTE}] [class*="bottomClose"],

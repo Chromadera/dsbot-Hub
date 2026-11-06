@@ -50,6 +50,13 @@ const version = pkg.version
 expect(pkg.private === false, 'package.json: `private` must be false to publish')
 expect(pkg.license === 'Apache-2.0', 'package.json: license must be Apache-2.0')
 expect(typeof pkg.engines?.node === 'string', 'package.json: engines.node is required')
+// The hub's client needs shell.mobile.nav, which is 0.2.2+ only. DSH enforces
+// engines.dsh on install and activation, so the range is the one place a new
+// DSH floor is bumped.
+expect(
+  typeof pkg.engines?.dsh === 'string' && pkg.engines.dsh.trim() !== '',
+  'package.json: engines.dsh is required (the hub needs DSH 0.2.2+ for shell.mobile.nav)',
+)
 for (const required of [
   'CHANGELOG.md', 'SECURITY.md', 'THIRD_PARTY.md', 'NOTICE', 'LICENSE',
   'README.md', 'SETUP.md', 'docs', 'src', 'index.js', 'client.js',
@@ -131,7 +138,12 @@ for (const file of ['README.md', 'SETUP.md', 'release/README.md']) checkLinks(fi
 // Artifacts, when present, must agree with the manifest --------------------
 if (exists('release')) {
   const files = readdirSync(join(root, 'release'))
-  const fork = files.find(name => /^ds-bot-.*\.tgz$/.test(name))
+  // More than one fork tarball may sit in release/ (a previous version kept for
+  // rollback); the manifest must describe the newest one, not directory order.
+  const fork = files
+    .filter(name => /^ds-bot-.*\.tgz$/.test(name))
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
+    .at(-1)
   if (fork !== undefined && exists('release/RELEASE.json')) {
     const manifest = JSON.parse(text('release/RELEASE.json'))
     expect(manifest.artifacts?.dsbot === fork, `release/RELEASE.json: dsbot artifact is ${fork}`)

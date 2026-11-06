@@ -904,6 +904,114 @@ window.__ModuleLoader__.load({
       }
     }
 
+    // The same choreography drawBootScene writes to the DOM, returned as values.
+    // Sampling this into CSS keyframes moves the boot scene onto the compositor,
+    // so it keeps animating while the panel iframe blocks the main thread.
+    function scenePoses(idea, t) {
+      const out = Array.from({ length: 5 }, () => ({ x: 0, y: 0, rot: 0, scale: 1, op: 0 }))
+      const TAU = Math.PI * 2
+      if (idea === 1) {
+        const p = bootEaseOut(t / 0.9)
+        Object.assign(out[0], { x: 0, y: 95 * (1 - p), rot: -22 * (1 - p), scale: .82 + .18 * p, op: p })
+        for (let i = 1; i < 5; i++) {
+          const st = [[-235, 20], [235, 10], [-190, 72], [190, 62]][i - 1]
+          const q = bootEaseOut((t - (.10 + i * .07)) / .72)
+          const a = i * TAU / 5 - Math.PI / 2
+          Object.assign(out[i], { x: bootLerp(st[0], Math.cos(a) * 112, q), y: bootLerp(st[1], Math.sin(a) * 48, q), rot: bootLerp(-14, 0, q), scale: .74 + .12 * q, op: q })
+        }
+        if (t > .95) {
+          const u = t - .95
+          for (let i = 1; i < 5; i++) {
+            const a = i * TAU / 5 - Math.PI / 2 + u * .42
+            const dep = (Math.sin(a) + 1) / 2
+            Object.assign(out[i], { x: Math.cos(a) * 112, y: Math.sin(a) * 48, rot: 0, scale: .76 + .10 * dep, op: .70 + .30 * dep })
+          }
+          Object.assign(out[0], { x: 0, y: Math.sin(t * 2.1) * 2, rot: 0, scale: 1.12, op: 1 })
+        }
+      } else if (idea === 2) {
+        const xs = [-126, -63, 0, 63, 126]
+        for (let i = 0; i < 5; i++) {
+          const local = ((t - i * .18) % 2.6 + 2.6) % 2.6
+          const q = local < 1 ? local : -1
+          const leap = q >= 0 ? Math.sin(Math.PI * q) : 0
+          Object.assign(out[i], { x: xs[i], y: 55 - 82 * leap, rot: q >= 0 ? -18 * Math.cos(Math.PI * q) : 0, scale: .70 + .16 * leap, op: .9 + .1 * leap })
+        }
+      } else if (idea === 3) {
+        const u = t % 3.0
+        for (let i = 0; i < 5; i++) {
+          const a = i * TAU / 5 - Math.PI / 2
+          const bx = Math.cos(a) * 112, by = Math.sin(a) * 45
+          const dive = bootSmooth(.08, .78, u)
+          let y = by, sc = 1, op = 1
+          if (u < .82) { y = by + 72 * dive; sc = 1 - .32 * dive; op = 1 - dive }
+          else if (u < 1.45) { y = by + 72; sc = .68; op = 0 }
+          else {
+            const q = bootSmooth(1.45 + i * .05, 2.45 + i * .05, u)
+            y = by + (1 - q) * 72; sc = .68 + .32 * q; op = q
+          }
+          Object.assign(out[i], { x: bx, y, rot: 0, scale: sc * (i === 0 ? 1.1 : 1), op })
+        }
+      } else if (idea === 4) {
+        for (let i = 0; i < 5; i++) {
+          const a = t * .62 + i * TAU / 5 - Math.PI / 2
+          const r = 92 + 25 * Math.sin(t * .95 + i * .7)
+          const dep = (Math.sin(a) + 1) / 2
+          Object.assign(out[i], { x: Math.cos(a) * r, y: Math.sin(a) * r * .48, rot: 0, scale: .72 + .18 * dep, op: .62 + .38 * dep })
+        }
+      } else {
+        const xs = [-125, -62, 0, 62, 125], u = t % 3.0
+        for (let i = 0; i < 5; i++) {
+          const local = (u - i * .2 + 3.0) % 3.0
+          const f = local < .36 ? Math.sin(Math.PI * local / .36) : 0
+          Object.assign(out[i], { x: xs[i], y: 48 + Math.abs(i - 2) * 4 - f * 15, rot: (i % 2 ? 1 : -1) * 32 * f, scale: .70 + .18 * f, op: .86 + .14 * f })
+        }
+      }
+      return out
+    }
+
+    // Poses sampled at 20 Hz per whale; linear interpolation between them is
+    // indistinguishable from the rAF version. Ideas 2, 3 and 5 are exactly
+    // periodic, so they play whole cycles and loop forever — a slow iframe can
+    // never leave them frozen. Ideas 1 and 4 are not periodic (a one-shot
+    // entrance, and orbit vs breathing periods that never realign), so they
+    // play once and hold.
+    const BOOT_SCENE_PLAN = {
+      2: { dur: 10.4, loop: true },
+      3: { dur: 9, loop: true },
+      5: { dur: 9, loop: true },
+    }
+
+    function buildBootSceneCSS(idea) {
+      const { dur, loop } = BOOT_SCENE_PLAN[idea] ?? { dur: 8, loop: false }
+      const STEPS = Math.round(dur * 20)
+      let css = `.dbh-boot-scene[data-idea="${idea}"] .dbh-scene-whale{animation-play-state:paused}`
+      css += `.dbh-boot-scene[data-idea="${idea}"].live .dbh-scene-whale{animation-play-state:running}`
+      for (let w = 0; w < 5; w++) {
+        let frames = ''
+        for (let k = 0; k <= STEPS; k++) {
+          const p = scenePoses(idea, (k / STEPS) * dur)[w]
+          const pct = (k / STEPS * 100).toFixed(3)
+          frames += `${pct}%{transform:translate(calc(-50% + ${p.x.toFixed(1)}px),calc(-50% + ${p.y.toFixed(1)}px)) rotate(${p.rot.toFixed(1)}deg) scale(${p.scale.toFixed(3)});opacity:${p.op.toFixed(3)}}`
+        }
+        css += `@keyframes dbh-idea${idea}-w${w}{${frames}}`
+        css += `.dbh-boot-scene[data-idea="${idea}"] .dbh-scene-whale[data-w="${w}"]{animation:dbh-idea${idea}-w${w} ${dur}s linear ${loop ? 'infinite' : 'both'};z-index:${6 - w}}`
+      }
+      css += `@keyframes dbh-boot-drop{0%{transform:translateY(0);opacity:0}12%{opacity:.75}100%{transform:translateY(-52px);opacity:0}}`
+      for (let d = 0; d < 18; d++) {
+        css += `.dbh-boot-scene[data-idea="${idea}"] .dbh-scene-drop[data-d="${d}"]{left:${(10 + (d * 37) % 360).toFixed(0)}px;top:${(150 + (d * 23) % 95).toFixed(0)}px;animation:dbh-boot-drop ${(2.2 + (d % 5) * .25).toFixed(2)}s linear ${(-(d * .19) % 2.4).toFixed(2)}s infinite}`
+      }
+      if (idea === 4) {
+        css += `@keyframes dbh-boot-ring{from{transform:rotate(0)}to{transform:rotate(360deg)}}`
+        css += `.dbh-boot-scene[data-idea="4"] .dbh-scene-ring{opacity:.7;animation:dbh-boot-ring 40s linear infinite}`
+        css += `.dbh-boot-scene[data-idea="4"] .dbh-scene-ring:nth-child(2){animation-duration:33s;animation-direction:reverse}`
+      }
+      if (idea === 5) {
+        css += `@keyframes dbh-boot-spark{from{transform:translateX(-145px)}to{transform:translateX(145px)}}`
+        css += `.dbh-boot-scene[data-idea="5"] .dbh-scene-spark{opacity:1;animation:dbh-boot-spark 3s linear infinite}`
+      }
+      return css
+    }
+
     function WhaleScene({ active }) {
       const wrapRef = useRef(null)
       const sceneRef = useRef(null)
@@ -918,11 +1026,12 @@ window.__ModuleLoader__.load({
         scene.setAttribute('aria-hidden', 'true')
         scene.innerHTML = `
           <div class="dbh-scene-ring"></div><div class="dbh-scene-ring"></div>
-          ${WHALE_COLORS.map((color, i) => `<div class="dbh-scene-whale"><div class="dbh-scene-whale-art">${whaleMarkup(color, i)}</div></div>`).join('')}
-          ${'<div class="dbh-scene-drop"></div>'.repeat(18)}
+          ${WHALE_COLORS.map((color, i) => `<div class="dbh-scene-whale" data-w="${i}"><div class="dbh-scene-whale-art">${whaleMarkup(color, i)}</div></div>`).join('')}
+          ${Array.from({ length: 18 }, (_, i) => `<div class="dbh-scene-drop" data-d="${i}"></div>`).join('')}
           <div class="dbh-scene-spark"></div>`
         wrap.appendChild(scene)
         const state = {
+          el: scene,
           whales: [...scene.querySelectorAll('.dbh-scene-whale')],
           drops: [...scene.querySelectorAll('.dbh-scene-drop')],
           rings: [...scene.querySelectorAll('.dbh-scene-ring')],
@@ -940,20 +1049,32 @@ window.__ModuleLoader__.load({
       }, [idea])
 
       useEffect(() => {
-        if (!active || !sceneRef.current) return undefined
+        const scene = sceneRef.current
+        if (scene === null) return undefined
+        const el = scene.el
+        if (el === null || el === undefined) return undefined
+        el.dataset.idea = String(idea)
+        // Reduced motion keeps the static frame: CSS animations outrank inline
+        // styles, so the sheet must not be injected at all in that case.
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          drawBootScene(sceneRef.current, idea, .9)
+          drawBootScene(scene, idea, .9)
           return undefined
         }
-        let raf = 0
-        const start = performance.now()
-        const tick = now => {
-          drawBootScene(sceneRef.current, idea, (now - start) / 1000)
-          raf = requestAnimationFrame(tick)
+        const id = `dbh-boot-css-${idea}`
+        if (!document.getElementById(id)) {
+          const style = document.createElement('style')
+          style.id = id
+          style.textContent = buildBootSceneCSS(idea)
+          document.head.appendChild(style)
         }
-        drawBootScene(sceneRef.current, idea, 0)
-        raf = requestAnimationFrame(tick)
-        return () => cancelAnimationFrame(raf)
+        return undefined
+      }, [idea])
+
+      useEffect(() => {
+        const scene = sceneRef.current
+        if (scene === null || scene.el === null || scene.el === undefined) return undefined
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        scene.el.classList.toggle('live', active && !reduced)
       }, [active, idea])
 
       return h('div', { className: 'dbh-boot-pod', ref: wrapRef })

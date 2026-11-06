@@ -1,5 +1,7 @@
 import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto'
-import { writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { homedir } from 'node:os'
+import { dirname, join } from 'node:path'
 import http from 'node:http'
 import https from 'node:https'
 import { brotliDecompressSync, gunzipSync, inflateSync, zstdDecompressSync } from 'node:zlib'
@@ -81,6 +83,44 @@ function authPage(title, message) {
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title></head><body style="${PAGE_STYLE}"><main style="${CARD_STYLE}"><h1 style="margin:0 0 8px;font-size:17px">${escapeHtml(title)}</h1><p style="margin:0;color:#5b6570">${escapeHtml(message)}</p></main></body></html>`
 }
 
+/**
+ * The grant and session cookies are HMACs keyed by this secret. A fresh random
+ * key per start would invalidate every open panel on every restart — the server
+ * iframes then answer "Sign in through DSH" until each server is chosen again.
+ * Persist it under DSH_HOME so a restart keeps existing sessions valid.
+ * @returns the signing key, read from disk or generated once and saved (0600).
+ */
+export function loadSessionSecret() {
+  const home = typeof process.env.DSH_HOME === 'string' && process.env.DSH_HOME !== '' ? process.env.DSH_HOME : join(homedir(), '.dsh')
+  const file = join(home, 'dsbot-hub-session.key')
+  const readKey = () => {
+    try {
+      const saved = readFileSync(file, 'utf8').trim()
+      // A short or corrupt file would silently weaken the HMAC, so require the
+      // decoded key to be exactly the 32 bytes we generate.
+      if (!/^[A-Za-z0-9+/=_-]{40,}$/.test(saved)) return null
+      const key = Buffer.from(saved, 'base64')
+      return key.length === 32 ? key : null
+    } catch {
+      return null
+    }
+  }
+  const stored = readKey()
+  if (stored !== null) return stored
+  const fresh = randomBytes(32)
+  try {
+    mkdirSync(dirname(file), { recursive: true })
+    writeFileSync(file, fresh.toString('base64'), { mode: 0o600 })
+  } catch {
+    // A racing start may have written the file first; prefer its key so the two
+    // processes agree. Otherwise the write is non-fatal: sessions just do not
+    // survive a restart.
+    const raced = readKey()
+    if (raced !== null) return raced
+  }
+  return fresh
+}
+
 /** One listener per loopback origin, one host-routed listener for hostname origins. */
 export class ProxyManager {
   constructor(servers, sessions, config, logger) {
@@ -88,7 +128,7 @@ export class ProxyManager {
     this.sessions = sessions
     this.config = config
     this.log = logger
-    this.secret = randomBytes(32)
+    this.secret = loadSessionSecret()
     this.listeners = []
     this.active = new Set()
     this.hostMap = new Map()
