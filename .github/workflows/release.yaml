@@ -37,7 +37,7 @@ jobs:
       # The GitHub release archive is built on a machine that holds the fork
       # tarball (see RELEASING.md) and attached to the release by hand. This
       # workflow publishes the npm package, which does not contain the fork.
+      # Authenticates through OIDC against the package's trusted publisher
+      # (Chromadera/dsbot-Hub, release.yaml). No long-lived npm token.
       - name: Publish hub
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
