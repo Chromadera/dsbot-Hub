@@ -6,7 +6,7 @@ with the hub.
 
 The hub package does not fork or patch ds-bot: it calls the routes the DS Bot UI
 itself uses, so a stock 0.2.6 server works. The release archive also ships
-`ds-bot-0.2.6-hub.2.tgz`, a fork that adds server-owned reactions, the bot
+`ds-bot-0.2.6-hub.3.tgz`, a fork that adds server-owned reactions, the bot
 `react` tool and the shared back stack. The bundled compose image bakes that fork
 in; on an existing server, install it with `server/install-existing.sh`.
 

@@ -38,7 +38,7 @@ docker run -d --name dsbot-b \
   --env-file server/.env \
   -v /opt/dsbot-b/data:/data \
   -v /opt/dsbot-b/workspace:/workspace \
-  dsbots/ds-bot:0.2.6-hub.2
+  dsbots/ds-bot:0.2.6-hub.3
 ```
 
 - `--env-file` can point at a different file when the second team uses another

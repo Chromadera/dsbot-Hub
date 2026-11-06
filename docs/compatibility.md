@@ -6,7 +6,7 @@
 |---|---|
 | DSH | **0.2.2-alpha.3+** (source checkout for the mobile shell) |
 | Node | **>= 24.9.0** |
-| ds-bot | 0.2.6-hub.2; routes `state`, `chat`, `send`, `earlier`, `react`, `reactions` |
+| ds-bot | 0.2.6-hub.3; routes `state`, `chat`, `send`, `earlier`, `react`, `reactions` |
 | Browser | current Chromium/Safari/Firefox with ES2022 |
 
 ## Why 0.2.1 is desktop-only
@@ -39,8 +39,8 @@ The hub consumes only the routes the stock DS Bot UI uses. It does not fork or
 patch ds-bot, and it does not copy its data. A ds-bot version that changes those
 routes is unsupported until the hub is updated.
 
-The release archive also ships a separate fork, `ds-bot-0.2.6-hub.2`, which adds
+The release archive also ships a separate fork, `ds-bot-0.2.6-hub.3`, which adds
 server-owned reactions, the bot `react` tool and the shared back stack. It is a
-server-side package baked into `dsbots/ds-bot:0.2.6-hub.2`, not a hub
+server-side package baked into `dsbots/ds-bot:0.2.6-hub.3`, not a hub
 dependency. The hub works with either the stock 0.2.6 package or the fork; the
 reaction and back-gesture features need the fork.

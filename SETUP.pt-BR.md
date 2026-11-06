@@ -102,11 +102,11 @@ Esperado: todas as linhas terminam em `OK`.
 Depois leia a versão do fork sem instalá-lo:
 
 ```bash
-tar -xOf ds-bot-0.2.6-hub.2.tgz package/package.json \
+tar -xOf ds-bot-0.2.6-hub.3.tgz package/package.json \
   | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).version))'
 ```
 
-Esperado: `0.2.6-hub.2`. Qualquer outro valor: pare.
+Esperado: `0.2.6-hub.3`. Qualquer outro valor: pare.
 
 ## Fase 2 — servidor DS Bot
 
@@ -150,13 +150,13 @@ for _ in $(seq 1 30); do
     "require('/data/profiles/$DS_BOT_PROFILE/node_modules/ds-bot/package.json').version" 2>/dev/null)"
   TEMPLATE_VERSION="$(docker exec "$DS_BOT_CONTAINER" node -p \
     "require('/opt/dsh-template/profiles/$DS_BOT_PROFILE/node_modules/ds-bot/package.json').version" 2>/dev/null)"
-  if [ "$DATA_VERSION" = "0.2.6-hub.2" ] && [ "$TEMPLATE_VERSION" = "0.2.6-hub.2" ]; then break; fi
+  if [ "$DATA_VERSION" = "0.2.6-hub.3" ] && [ "$TEMPLATE_VERSION" = "0.2.6-hub.3" ]; then break; fi
   sleep 2
 done
 printf 'data=%s template=%s\n' "$DATA_VERSION" "$TEMPLATE_VERSION"
 ```
 
-Esperado: `data=0.2.6-hub.2 template=0.2.6-hub.2`. Qualquer outro valor após a
+Esperado: `data=0.2.6-hub.3 template=0.2.6-hub.3`. Qualquer outro valor após a
 repetição: pare e leia os logs do contêiner.
 
 ### 2B. Servidor existente
@@ -165,7 +165,7 @@ Instale o fork no perfil de dados em uso. O script cria o próprio backup com da
 e reinicia o contêiner:
 
 ```bash
-./server/install-existing.sh "$DS_BOT_CONTAINER" ds-bot-0.2.6-hub.2.tgz "$DS_BOT_PROFILE"
+./server/install-existing.sh "$DS_BOT_CONTAINER" ds-bot-0.2.6-hub.3.tgz "$DS_BOT_PROFILE"
 ```
 
 Anote o caminho de backup que ele imprime (`backup: /data/.../ds-bot.bak-<stamp>`)
@@ -206,7 +206,7 @@ docker run -d --name dsbot-b \
   --env-file server/.env \
   -v /opt/dsbot-b/data:/data \
   -v /opt/dsbot-b/workspace:/workspace \
-  dsbots/ds-bot:0.2.6-hub.2
+  dsbots/ds-bot:0.2.6-hub.3
 ```
 
 Regras:
@@ -287,7 +287,7 @@ docker exec "$DS_BOT_CONTAINER" sh -lc \
   "test -f /data/profiles/$DS_BOT_PROFILE/node_modules/ds-bot/src/host/reactions.js && echo reactions_present"
 ```
 
-Esperado: a imagem esperada, `0.2.6-hub.2`, `reactions_present`.
+Esperado: a imagem esperada, `0.2.6-hub.3`, `reactions_present`.
 
 Na UI do hub, confirme:
 
@@ -330,7 +330,7 @@ Retorne exatamente este formato, sem valores de segredo:
 Status: success | pending-manual | failed
 Phase: <last completed phase>
 Release: 0.11.13
-DS Bot: 0.2.6-hub.2
+DS Bot: 0.2.6-hub.3
 Hub: 0.11.13
 Server container: <name / image / status>
 Data profile: <version>
@@ -378,7 +378,7 @@ Pare e pergunte ao operador quando:
 
 - faltar uma entrada obrigatória ou ela for ambígua;
 - o preflight ou um checksum falhar;
-- uma versão não for `0.11.13` / `0.2.6-hub.2`;
+- uma versão não for `0.11.13` / `0.2.6-hub.3`;
 - o contêiner não estiver rodando ou os logs mostrarem erro de inicialização;
 - um comando for imprimir ou persistir um segredo;
 - um restart, push de imagem, mudança de DNS ou exclusão não estiver autorizado;

@@ -22,9 +22,11 @@ as real: a later commit does not remove a secret from a published history.
 
 ## 3. Build the archive
 
-`release/ds-bot-0.2.6-hub.2.tgz` must exist first. It is built from the DS Bot
+`release/ds-bot-0.2.6-hub.3.tgz` must exist first. It is built from the DS Bot
 fork source, not from this repository's tracked files (`vendor/` carries the
-`hub.1` fork source; `hub.2` adds the applied host patch and `REACTIONS.md`).
+`hub.1` fork source; `hub.2` adds the applied host patch and `REACTIONS.md`;
+`hub.3` adds the touch fixes — the thumb-anchored swipe-reply glyph and the
+selectable message reader).
 The build refuses to run without it, because the archive would otherwise ship
 without a server.
 

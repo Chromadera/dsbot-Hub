@@ -94,11 +94,11 @@ sha256sum -c SHA256SUMS
 然后在不安装的情况下读取分支版本：
 
 ```bash
-tar -xOf ds-bot-0.2.6-hub.2.tgz package/package.json \
+tar -xOf ds-bot-0.2.6-hub.3.tgz package/package.json \
   | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).version))'
 ```
 
-预期：`0.2.6-hub.2`。其他值：停止。
+预期：`0.2.6-hub.3`。其他值：停止。
 
 ## 第 2 阶段 — DS Bot 服务器
 
@@ -139,13 +139,13 @@ for _ in $(seq 1 30); do
     "require('/data/profiles/$DS_BOT_PROFILE/node_modules/ds-bot/package.json').version" 2>/dev/null)"
   TEMPLATE_VERSION="$(docker exec "$DS_BOT_CONTAINER" node -p \
     "require('/opt/dsh-template/profiles/$DS_BOT_PROFILE/node_modules/ds-bot/package.json').version" 2>/dev/null)"
-  if [ "$DATA_VERSION" = "0.2.6-hub.2" ] && [ "$TEMPLATE_VERSION" = "0.2.6-hub.2" ]; then break; fi
+  if [ "$DATA_VERSION" = "0.2.6-hub.3" ] && [ "$TEMPLATE_VERSION" = "0.2.6-hub.3" ]; then break; fi
   sleep 2
 done
 printf 'data=%s template=%s\n' "$DATA_VERSION" "$TEMPLATE_VERSION"
 ```
 
-预期：`data=0.2.6-hub.2 template=0.2.6-hub.2`。重试后仍不符：停止并查看容器
+预期：`data=0.2.6-hub.3 template=0.2.6-hub.3`。重试后仍不符：停止并查看容器
 日志。
 
 ### 2B. 已有服务器
@@ -153,7 +153,7 @@ printf 'data=%s template=%s\n' "$DATA_VERSION" "$TEMPLATE_VERSION"
 把分支安装到正在使用的数据配置。脚本会创建自己的时间戳备份并重启容器：
 
 ```bash
-./server/install-existing.sh "$DS_BOT_CONTAINER" ds-bot-0.2.6-hub.2.tgz "$DS_BOT_PROFILE"
+./server/install-existing.sh "$DS_BOT_CONTAINER" ds-bot-0.2.6-hub.3.tgz "$DS_BOT_PROFILE"
 ```
 
 记下它输出的备份路径（`backup: /data/.../ds-bot.bak-<stamp>`），用于报告和
@@ -191,7 +191,7 @@ docker run -d --name dsbot-b \
   --env-file server/.env \
   -v /opt/dsbot-b/data:/data \
   -v /opt/dsbot-b/workspace:/workspace \
-  dsbots/ds-bot:0.2.6-hub.2
+  dsbots/ds-bot:0.2.6-hub.3
 ```
 
 规则：
@@ -264,7 +264,7 @@ docker exec "$DS_BOT_CONTAINER" sh -lc \
   "test -f /data/profiles/$DS_BOT_PROFILE/node_modules/ds-bot/src/host/reactions.js && echo reactions_present"
 ```
 
-预期：正确的镜像、`0.2.6-hub.2`、`reactions_present`。
+预期：正确的镜像、`0.2.6-hub.3`、`reactions_present`。
 
 在 Hub 界面确认：
 
@@ -306,7 +306,7 @@ docker exec "$DS_BOT_CONTAINER" sh -lc \
 Status: success | pending-manual | failed
 Phase: <last completed phase>
 Release: 0.11.13
-DS Bot: 0.2.6-hub.2
+DS Bot: 0.2.6-hub.3
 Hub: 0.11.13
 Server container: <name / image / status>
 Data profile: <version>
@@ -354,7 +354,7 @@ Hub——把上一个 tarball 重新安装到同一配置，然后重启 DSH：
 
 - 缺少必需输入或输入不明确；
 - preflight 或校验和失败；
-- 版本不是 `0.11.13` / `0.2.6-hub.2`；
+- 版本不是 `0.11.13` / `0.2.6-hub.3`；
 - 容器未运行，或日志显示启动错误；
 - 命令会打印或持久化机密；
 - 重启、镜像推送、DNS 变更或删除未获授权；

@@ -54,7 +54,7 @@ DSH session is valid. A 401 is a DSH session problem, not a ds-bot problem.
 4. If DSH is HTTPS and the origin is HTTP, the browser blocks the mixed-content
    iframe. Terminate TLS on the origin ports too; one certificate for the host
    covers every port.
-5. DS Bot 0.2.6-hub.2 sends no `X-Frame-Options` and no CSP. If a future version
+5. DS Bot 0.2.6-hub.3 sends no `X-Frame-Options` and no CSP. If a future version
    adds one, the frame is blocked by the upstream; its UI in a tab still works.
 
 ## 403 from the upstream (not the grant)

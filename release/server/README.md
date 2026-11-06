@@ -1,6 +1,6 @@
 # DSBots Hub server image
 
-This directory bakes DS Bot `0.2.6-hub.2` into the server template, so new
+This directory bakes DS Bot `0.2.6-hub.3` into the server template, so new
 containers get server-owned reactions and the shared back stack without a
 post-install patch.
 
@@ -24,7 +24,7 @@ in the release root.
 port and host data paths. The defaults are `ds-bot`, `13081`,
 `/opt/ds-bot/data` and `/opt/ds-bot/workspace`.
 
-The build uses `ds-bot-0.2.6-hub.2.tgz` from the release root and replaces the
+The build uses `ds-bot-0.2.6-hub.3.tgz` from the release root and replaces the
 `/opt/dsh-template/profiles/web/node_modules/ds-bot` copy inside the image.
 
 The container publishes `127.0.0.1:13081` (container port `3080`) and mounts
@@ -36,7 +36,7 @@ runtime user if you do not want Docker to create them as root.
 After rebuilding or recreating the image, upgrade the data profile once:
 
 ```bash
-./server/install-existing.sh ds-bot ds-bot-0.2.6-hub.2.tgz web
+./server/install-existing.sh ds-bot ds-bot-0.2.6-hub.3.tgz web
 ```
 
 The third argument is the profile inside the container; it defaults to `web`. The
@@ -61,7 +61,7 @@ docker run -d --name dsbot-b \
   --env-file server/.env \
   -v /opt/dsbot-b/data:/data \
   -v /opt/dsbot-b/workspace:/workspace \
-  dsbots/ds-bot:0.2.6-hub.2
+  dsbots/ds-bot:0.2.6-hub.3
 ```
 
 Never mount one data volume in two containers.

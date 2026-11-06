@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  版本 <strong>0.11.13</strong> · DS Bot <strong>0.2.6-hub.2</strong> · DSH <strong>0.2.2-alpha.3+</strong>
+  版本 <strong>0.11.13</strong> · DS Bot <strong>0.2.6-hub.3</strong> · DSH <strong>0.2.2-alpha.3+</strong>
 </p>
 
 ---
@@ -181,7 +181,7 @@ Hub 调用的是 DS Bot 界面自身使用的路由，因此已有的 DS Bot 0.2
 
 ```bash
 # 已有容器：备份并更新其正在使用的数据配置
-./server/install-existing.sh ds-bot ds-bot-0.2.6-hub.2.tgz
+./server/install-existing.sh ds-bot ds-bot-0.2.6-hub.3.tgz
 
 # 或重建镜像，让新容器直接使用该分支
 docker compose -f server/compose.yml up -d --build
@@ -203,7 +203,7 @@ docker run -d --name dsbot-b \
   --env-file server/.env \
   -v /opt/dsbot-b/data:/data \
   -v /opt/dsbot-b/workspace:/workspace \
-  dsbots/ds-bot:0.2.6-hub.2
+  dsbots/ds-bot:0.2.6-hub.3
 ```
 
 主机端口不要落在 `13090`–`13199`：Hub 在该区间分配浏览器来源端口。绝不要让
@@ -268,8 +268,8 @@ iframe。一张覆盖该主机名的证书即可用于所有端口；用 Caddy �
 | 文件 | 用途 |
 |---|---|
 | `dsbot-hub-0.11.13.tgz` | DSH Hub 插件 |
-| `dsbot-mobile-desktop-gate-0.1.1.tgz` | 移动端桌面 UI gate |
-| `ds-bot-0.2.6-hub.2.tgz` | DS Bot 分支：回应与返回手势 |
+| `dsbot-mobile-desktop-gate-0.1.2.tgz` | 移动端桌面 UI gate |
+| `ds-bot-0.2.6-hub.3.tgz` | DS Bot 分支：回应与返回手势 |
 | `dsbot-hub-release-0.11.13.tar.gz` | 解压后的发布包：文档、配置、安装脚本、服务器构建 |
 | `SHA256SUMS` | 产物校验和 |
 | `preflight.sh` | 主机与发布包检查 |

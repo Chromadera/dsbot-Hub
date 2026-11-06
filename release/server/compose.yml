@@ -3,7 +3,7 @@ services:
     build:
       context: ..
       dockerfile: server/Dockerfile
-    image: dsbots/ds-bot:0.2.6-hub.2
+    image: dsbots/ds-bot:0.2.6-hub.3
     container_name: "${DS_BOT_CONTAINER:-ds-bot}"
     ports:
       - "127.0.0.1:${DS_BOT_PORT:-13081}:3080"

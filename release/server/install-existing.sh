@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 # Upgrade an existing DS Bot container's data profile from the fork tarball.
-# Usage: ./install-existing.sh [container] [ds-bot-0.2.6-hub.2.tgz] [profile]
+# Usage: ./install-existing.sh [container] [ds-bot-0.2.6-hub.3.tgz] [profile]
 set -eu
 
 CONTAINER="${1:-ds-bot}"
-TGZ="${2:-ds-bot-0.2.6-hub.2.tgz}"
+TGZ="${2:-ds-bot-0.2.6-hub.3.tgz}"
 PROFILE="${3:-web}"
 
 [ -f "$TGZ" ] || { echo "fork tarball not found: $TGZ" >&2; exit 1; }
@@ -25,7 +25,7 @@ docker exec -u 0 -e PROFILE="$PROFILE" "$CONTAINER" sh -ec '
   mv "$profile/node_modules/package" "$profile/node_modules/ds-bot"
   chown -R node:node "$profile/node_modules/ds-bot"
   test -f "$profile/node_modules/ds-bot/src/host/reactions.js"
-  node -e "const p=require(\"$profile/node_modules/ds-bot/package.json\"); if(p.version!==\"0.2.6-hub.2\") throw new Error(p.version)"
-  echo "installed 0.2.6-hub.2; backup: $backup"
+  node -e "const p=require(\"$profile/node_modules/ds-bot/package.json\"); if(p.version!==\"0.2.6-hub.3\") throw new Error(p.version)"
+  echo "installed 0.2.6-hub.3; backup: $backup"
 '
 docker restart "$CONTAINER"

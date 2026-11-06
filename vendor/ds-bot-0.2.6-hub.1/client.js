@@ -8607,8 +8607,8 @@ var MESSAGE_UX_CSS = `
 .bt-quote-inline{margin:0 0 6px;padding:5px 8px;border-left:2px solid currentColor;border-radius:6px;background:rgba(127,127,127,.18);color:inherit;opacity:.92}
 .bt-quote-inline-label{font-size:11px;line-height:1.3;font-weight:600;color:inherit}
 .bt-quote-inline-text{font-size:12px;line-height:1.4;color:inherit;opacity:.72;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bt-swipe-reply{position:fixed;left:14px;z-index:91;width:36px;height:36px;border-radius:50%;background:var(--bt-card,#1c1c1c);border:.5px solid var(--bt-line-2,rgba(255,255,255,.14));display:flex;align-items:center;justify-content:center;color:var(--bt-ink,#f2f2f2);pointer-events:none;opacity:0;transform:translateY(-50%) scale(.8);box-shadow:0 6px 18px rgba(0,0,0,.2)}
-.bt-swipe-reply svg{width:18px;height:18px}
+.bt-swipe-reply{position:fixed;left:14px;z-index:91;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--bt-ink-2,rgba(140,140,140,.95));background:none;border:0;border-radius:0;box-shadow:none;pointer-events:none;opacity:0;transform:translateY(-50%) scale(.8)}
+.bt-swipe-reply svg{width:22px;height:22px}
 @media (hover: none), (pointer: coarse), (max-width: 1024px){.bt-tools,.bt-utools{display:none !important}}
 `;
 if (typeof document !== "undefined" && !document.getElementById("bt-message-ux-style")) {
@@ -8646,7 +8646,7 @@ var SHEET_CSS = `
 .bt-message-view-btn{width:44px;height:44px;flex:none;border:0;border-radius:10px;background:none;color:#f2f2f2;font:inherit;font-size:24px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .bt-message-view-btn:active{background:rgba(255,255,255,.08)}
 .bt-message-view-title{flex:1;font-size:16px;font-weight:600;letter-spacing:0}
-.bt-message-view-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:20px 18px calc(24px + env(safe-area-inset-bottom));font-size:16px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;user-select:text;-webkit-user-select:text;cursor:text}
+.bt-message-view-body{flex:1;min-height:0;width:100%;box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;margin:0;padding:20px 18px calc(24px + env(safe-area-inset-bottom));font-family:inherit;font-size:16px;line-height:1.55;color:inherit;background:none;border:0;outline:0;resize:none;white-space:pre-wrap;overflow-wrap:anywhere;user-select:text;-webkit-user-select:text;cursor:text}
 .bt-sheet-notice{flex:none;text-align:center;font-size:12px;line-height:1.4;color:#b9b9b9;padding:6px 4px 8px}
 .bt-sheet-group{display:flex;flex-direction:column;border:.5px solid rgba(255,255,255,.12);border-radius:14px;background:#1c1c1c;margin:4px 0;overflow:hidden;flex:none}
 .bt-sheet-item{display:flex;align-items:center;gap:14px;width:100%;min-height:50px;border:0;background:none;color:#f2f2f2;font:inherit;font-size:15px;font-weight:400;text-align:left;padding:0 16px;cursor:pointer;touch-action:manipulation}
@@ -8700,6 +8700,11 @@ function useSwipeReply(row, text, sessionId, name, actions, cancelLongPress) {
   const axis = (0, import_react19.useRef)(null);
   const dx = (0, import_react19.useRef)(0);
   const indicator = (0, import_react19.useRef)(null);
+  // Where the badge belongs: the message's own left edge (not the viewport's,
+  // which sits under the bot rail on tablets) and the finger's Y (not the row
+  // centre, which on a tall message lands far from the thumb).
+  const anchorLeft = (0, import_react19.useRef)(0);
+  const anchorY = (0, import_react19.useRef)(0);
   const interactive = (target) => target instanceof Element && target.closest("a,button,input,textarea,select,pre,code,[role=button],[role=link]");
   const dropIndicator = () => { if (indicator.current) { indicator.current.remove(); indicator.current = null; } };
   const showIndicator = () => {
@@ -8710,8 +8715,11 @@ function useSwipeReply(row, text, sessionId, name, actions, cancelLongPress) {
       document.body.appendChild(el);
       indicator.current = el;
     }
-    const rect = row.current?.getBoundingClientRect();
-    if (rect) indicator.current.style.top = `${rect.top + rect.height / 2}px`;
+    const width = 38;
+    const left = Math.max(8, Math.min(Math.round(anchorLeft.current - 6), window.innerWidth - width - 8));
+    indicator.current.style.left = `${left}px`;
+    const y = Math.min(Math.max(28, anchorY.current), window.innerHeight - 28);
+    indicator.current.style.top = `${y}px`;
     const progress = Math.min(1, dx.current / 56);
     indicator.current.style.opacity = progress;
     indicator.current.style.transform = `translateY(-50%) scale(${0.82 + progress * 0.18})`;
@@ -8723,6 +8731,9 @@ function useSwipeReply(row, text, sessionId, name, actions, cancelLongPress) {
     start.current = { x: touch.clientX, y: touch.clientY };
     axis.current = null; dx.current = 0;
     if (row.current) { row.current.style.transition = "none"; row.current.style.transform = ""; }
+    const rect = row.current?.getBoundingClientRect();
+    anchorLeft.current = rect ? rect.left : 14;
+    anchorY.current = touch.clientY;
     showIndicator();
   };
   const move = (event) => {
@@ -8972,7 +8983,7 @@ function MessageSheet({ text, msgKey, sessionId, name, react, actions, onClose, 
           h("button", { type: "button", className: "bt-message-view-btn", "aria-label": t("Close"), onClick: onClose }, "×"),
           h("div", { className: "bt-message-view-title" }, t("Message")),
           h("button", { type: "button", className: "bt-message-view-btn", "aria-label": copied ? t("Copied") : t("Copy"), title: copied ? t("Copied") : t("Copy"), onClick: copyMessage }, copied ? h(CheckIcon) : h(CopyIcon))),
-        h("div", { className: "bt-message-view-body" }, readerText)
+        h("textarea", { className: "bt-message-view-body", readOnly: true, spellCheck: false, value: readerText, "aria-label": t("Message") })
       ), document.body
     );
   }

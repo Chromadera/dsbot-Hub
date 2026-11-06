@@ -18,7 +18,7 @@ gate/                          mobile desktop-UI gate
 server/                        DS Bot image build, compose file, .env.example
 docs/                          install, config, mobile, operations, upgrade
 dsbot-hub-<version>.tgz        hub bundle
-ds-bot-0.2.6-hub.2.tgz         DS Bot fork (reactions + back gestures)
+ds-bot-0.2.6-hub.3.tgz         DS Bot fork (reactions + back gestures)
 dsbot-mobile-desktop-gate-*.tgz
 SHA256SUMS                     artifact checksums
 VERSIONS.md                    the tested version set
@@ -81,7 +81,7 @@ The bundled fork adds reactions and back gestures. To move an existing container
 onto it:
 
 ```bash
-./server/install-existing.sh ds-bot ds-bot-0.2.6-hub.2.tgz
+./server/install-existing.sh ds-bot ds-bot-0.2.6-hub.3.tgz
 ```
 
 The script backs up the old package under
@@ -101,7 +101,7 @@ docker run -d --name dsbot-b \
   --env-file server/.env \
   -v /opt/dsbot-b/data:/data \
   -v /opt/dsbot-b/workspace:/workspace \
-  dsbots/ds-bot:0.2.6-hub.2
+  dsbots/ds-bot:0.2.6-hub.3
 ```
 
 Then add each endpoint in the hub. Never share a data volume. See
@@ -136,5 +136,5 @@ Do not expose DSH or the origin ports to the public internet. Keep
 ## License
 
 Apache-2.0. The DS Bot fork ships its own `LICENSE`, `NOTICE` and
-`MODIFICATIONS.md` inside `ds-bot-0.2.6-hub.2.tgz`. See `NOTICE`,
+`MODIFICATIONS.md` inside `ds-bot-0.2.6-hub.3.tgz`. See `NOTICE`,
 `THIRD_PARTY.md`, and `VERSIONS.md`.

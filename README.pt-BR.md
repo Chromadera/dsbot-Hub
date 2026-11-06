@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  Versão <strong>0.11.13</strong> · DS Bot <strong>0.2.6-hub.2</strong> · DSH <strong>0.2.2-alpha.3+</strong>
+  Versão <strong>0.11.13</strong> · DS Bot <strong>0.2.6-hub.3</strong> · DSH <strong>0.2.2-alpha.3+</strong>
 </p>
 
 ---
@@ -199,7 +199,7 @@ pilha de voltar compartilhada. Duas formas de migrar:
 
 ```bash
 # contêiner existente: faz backup e atualiza o perfil de dados em uso
-./server/install-existing.sh ds-bot ds-bot-0.2.6-hub.2.tgz
+./server/install-existing.sh ds-bot ds-bot-0.2.6-hub.3.tgz
 
 # ou reconstrua a imagem para que novos contêineres já usem o fork
 docker compose -f server/compose.yml up -d --build
@@ -221,7 +221,7 @@ docker run -d --name dsbot-b \
   --env-file server/.env \
   -v /opt/dsbot-b/data:/data \
   -v /opt/dsbot-b/workspace:/workspace \
-  dsbots/ds-bot:0.2.6-hub.2
+  dsbots/ds-bot:0.2.6-hub.3
 ```
 
 Mantenha as portas de host fora de `13090`–`13199`: o hub aloca ali as origens do
@@ -290,8 +290,8 @@ Veja [docs/config.md](docs/config.md) para todos os campos e as regras de origem
 | Artefato | Finalidade |
 |---|---|
 | `dsbot-hub-0.11.13.tgz` | plugin do hub para o DSH |
-| `dsbot-mobile-desktop-gate-0.1.1.tgz` | gate mobile da interface desktop |
-| `ds-bot-0.2.6-hub.2.tgz` | fork do DS Bot: reações e gestos de voltar |
+| `dsbot-mobile-desktop-gate-0.1.2.tgz` | gate mobile da interface desktop |
+| `ds-bot-0.2.6-hub.3.tgz` | fork do DS Bot: reações e gestos de voltar |
 | `dsbot-hub-release-0.11.13.tar.gz` | release descompactada: docs, perfil, instalador, build do servidor |
 | `SHA256SUMS` | checksums dos artefatos |
 | `preflight.sh` | verificação do host e da release |

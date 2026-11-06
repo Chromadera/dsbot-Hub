@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  Release <strong>0.11.13</strong> · DS Bot <strong>0.2.6-hub.2</strong> · DSH <strong>0.2.2-alpha.3+</strong>
+  Release <strong>0.11.13</strong> · DS Bot <strong>0.2.6-hub.3</strong> · DSH <strong>0.2.2-alpha.3+</strong>
 </p>
 
 ---
@@ -195,7 +195,7 @@ shared back stack. Two ways to move to it:
 
 ```bash
 # existing container: back up and patch its live data profile
-./server/install-existing.sh ds-bot ds-bot-0.2.6-hub.2.tgz
+./server/install-existing.sh ds-bot ds-bot-0.2.6-hub.3.tgz
 
 # or rebuild the image so new containers are already on the fork
 docker compose -f server/compose.yml up -d --build
@@ -217,7 +217,7 @@ docker run -d --name dsbot-b \
   --env-file server/.env \
   -v /opt/dsbot-b/data:/data \
   -v /opt/dsbot-b/workspace:/workspace \
-  dsbots/ds-bot:0.2.6-hub.2
+  dsbots/ds-bot:0.2.6-hub.3
 ```
 
 Keep host ports out of `13090`–`13199`: the hub allocates its browser origins
@@ -286,8 +286,8 @@ See [docs/config.md](docs/config.md) for every field and the origin rules.
 | Artifact | Purpose |
 |---|---|
 | `dsbot-hub-0.11.13.tgz` | DSH hub plugin |
-| `dsbot-mobile-desktop-gate-0.1.1.tgz` | mobile desktop-UI gate |
-| `ds-bot-0.2.6-hub.2.tgz` | DS Bot fork: reactions and back gestures |
+| `dsbot-mobile-desktop-gate-0.1.2.tgz` | mobile desktop-UI gate |
+| `ds-bot-0.2.6-hub.3.tgz` | DS Bot fork: reactions and back gestures |
 | `dsbot-hub-release-0.11.13.tar.gz` | unpacked release: docs, profile, installer, server build |
 | `SHA256SUMS` | artifact checksums |
 | `preflight.sh` | host and release verification |

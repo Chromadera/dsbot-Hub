@@ -2,7 +2,7 @@
 
 ## Hub 0.11.12 → 0.11.13
 
-Install the new hub tarball and the DS Bot `0.2.6-hub.2` fork, restart DSH web
+Install the new hub tarball and the DS Bot `0.2.6-hub.3` fork, restart DSH web
 and the DS Bot container, then hard-refresh. The fork adds server-owned
 reactions and the shared back stack. Existing local-only reactions remain in
 browser storage but are not used for bot context.

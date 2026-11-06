@@ -100,11 +100,11 @@ Expected: every line ends in `OK`.
 Then read the fork version without installing it:
 
 ```bash
-tar -xOf ds-bot-0.2.6-hub.2.tgz package/package.json \
+tar -xOf ds-bot-0.2.6-hub.3.tgz package/package.json \
   | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).version))'
 ```
 
-Expected: `0.2.6-hub.2`. Any other value: stop.
+Expected: `0.2.6-hub.3`. Any other value: stop.
 
 ## Phase 2 — DS Bot server
 
@@ -147,13 +147,13 @@ for _ in $(seq 1 30); do
     "require('/data/profiles/$DS_BOT_PROFILE/node_modules/ds-bot/package.json').version" 2>/dev/null)"
   TEMPLATE_VERSION="$(docker exec "$DS_BOT_CONTAINER" node -p \
     "require('/opt/dsh-template/profiles/$DS_BOT_PROFILE/node_modules/ds-bot/package.json').version" 2>/dev/null)"
-  if [ "$DATA_VERSION" = "0.2.6-hub.2" ] && [ "$TEMPLATE_VERSION" = "0.2.6-hub.2" ]; then break; fi
+  if [ "$DATA_VERSION" = "0.2.6-hub.3" ] && [ "$TEMPLATE_VERSION" = "0.2.6-hub.3" ]; then break; fi
   sleep 2
 done
 printf 'data=%s template=%s\n' "$DATA_VERSION" "$TEMPLATE_VERSION"
 ```
 
-Expected: `data=0.2.6-hub.2 template=0.2.6-hub.2`. Anything else after the retry:
+Expected: `data=0.2.6-hub.3 template=0.2.6-hub.3`. Anything else after the retry:
 stop and read the container logs.
 
 ### 2B. Existing server
@@ -162,7 +162,7 @@ Install the fork into the live data profile. The script creates its own
 timestamped backup and restarts the container:
 
 ```bash
-./server/install-existing.sh "$DS_BOT_CONTAINER" ds-bot-0.2.6-hub.2.tgz "$DS_BOT_PROFILE"
+./server/install-existing.sh "$DS_BOT_CONTAINER" ds-bot-0.2.6-hub.3.tgz "$DS_BOT_PROFILE"
 ```
 
 Capture the backup path it prints (`backup: /data/.../ds-bot.bak-<stamp>`) for
@@ -202,7 +202,7 @@ docker run -d --name dsbot-b \
   --env-file server/.env \
   -v /opt/dsbot-b/data:/data \
   -v /opt/dsbot-b/workspace:/workspace \
-  dsbots/ds-bot:0.2.6-hub.2
+  dsbots/ds-bot:0.2.6-hub.3
 ```
 
 Rules:
@@ -279,7 +279,7 @@ docker exec "$DS_BOT_CONTAINER" sh -lc \
   "test -f /data/profiles/$DS_BOT_PROFILE/node_modules/ds-bot/src/host/reactions.js && echo reactions_present"
 ```
 
-Expected: the expected image, `0.2.6-hub.2`, `reactions_present`.
+Expected: the expected image, `0.2.6-hub.3`, `reactions_present`.
 
 In the hub UI, confirm:
 
@@ -321,7 +321,7 @@ Return exactly this shape, with no secret values:
 Status: success | pending-manual | failed
 Phase: <last completed phase>
 Release: 0.11.13
-DS Bot: 0.2.6-hub.2
+DS Bot: 0.2.6-hub.3
 Hub: 0.11.13
 Server container: <name / image / status>
 Data profile: <version>
@@ -369,7 +369,7 @@ Stop and ask the operator when:
 
 - a required input is missing or ambiguous;
 - preflight or a checksum fails;
-- a version is not `0.11.13` / `0.2.6-hub.2`;
+- a version is not `0.11.13` / `0.2.6-hub.3`;
 - the container is not running or logs show a startup error;
 - a command would print or persist a secret;
 - a restart, image push, DNS change, or deletion has not been authorized;
